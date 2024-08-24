@@ -34,7 +34,7 @@ const ResourceInfo = ({
         <TextInput
             label="Description"
             name="description"
-            type="textarea"
+            type="textarea" //
             onInputChange={onInputChange}
             value={values.description}
             error={errors?.description}

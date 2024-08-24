@@ -23,6 +23,7 @@ const TextInput  = ({
     preventSpaceInput = false,
     spaceReplacementChar = ' ',
     enabled = true,
+    type,
    ...props
 }: TextInputProps) => {
     const handleInputChange: React.ChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => onInputChange(name, event.target.value);
@@ -42,14 +43,25 @@ const TextInput  = ({
             ) : null}
             <Col md={label ? 14 : 24} xs={24} style={{ width: '100%' }}>
                 <>
-                    <Input
-                        placeholder={placeholder}
-                        value={value}
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
-                        disabled={!enabled}
-                        {...props}
-                    />
+                    {type === 'textarea' ? (
+                        <Input.TextArea
+                            placeholder={placeholder}
+                            value={value}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
+                            disabled={!enabled}
+                            {...props}
+                        />
+                        ) : (
+                        <Input
+                            placeholder={placeholder}
+                            value={value}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
+                            disabled={!enabled}
+                            {...props}
+                        />
+                    )}
                     {error ? (
                         <Typography.Text style={{ color: 'red' }}>{error}</Typography.Text>
                     ) : null}

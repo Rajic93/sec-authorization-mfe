@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { Checkbox, Row, Table, TableProps, Tooltip, Typography } from "antd";
-import {DeleteOutlined, EditOutlined, PlusCircleOutlined} from "@ant-design/icons";
-import {deleteResourceById, loadResources} from "../../services/resource.ts";
+import {DeleteOutlined, MoreOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import { Resource } from "../../dto/Resource.ts";
 import map from "lodash/map";
 
@@ -17,14 +16,20 @@ const tableIconButtonStyle = {
     marginRight: 4,
 };
 
-const Index = () => {
+interface ResourceListProps {
+    resourcesLoad: () => Promise<Resource[]>;
+    resourceDelete: (id: string) => Promise<Resource[]>;
+    onDelete?: (ids: string[]) => void;
+}
+
+const ResourceList = ({ resourcesLoad, resourceDelete, onDelete = (deletedIds) => console.log({ deletedIds }) }: ResourceListProps) => {
     const [editedResource, setEditedResource] = useState<Record<string, Partial<Resource> | undefined>>({});
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [rows, setRows] = useState<Resource[]>([]);
     const navigate = useNavigate();
 
     const onLoadHandler = () => {
-        loadResources()
+        resourcesLoad()
             .then((data) => setRows(
                 map(data, (row) => ({
                     ...row,
@@ -56,8 +61,16 @@ const Index = () => {
 
     const onBulkDelete = () => Promise.all(map(
         selectedRowKeys,
-        (id) => deleteResourceById(id.toString()),
-    ));
+        async (id) => {
+            await resourceDelete(id.toString());
+            return id;
+        },
+    )).then((ids) => {
+        setEditedResource({});
+        setSelectedRowKeys([]);
+        onLoadHandler()
+        onDelete(ids as string[])
+    });
 
     const columns = [
         {
@@ -107,7 +120,7 @@ const Index = () => {
             render: (_: undefined, record: Resource) => (
                 <Tooltip title="Resource details">
                     <Link to={`/resources/${record.id}`}>
-                        <EditOutlined />
+                        <MoreOutlined />
                     </Link>
                 </Tooltip>
             ),
@@ -148,4 +161,4 @@ const Index = () => {
     )
 }
 
-export default Index;
+export default ResourceList;

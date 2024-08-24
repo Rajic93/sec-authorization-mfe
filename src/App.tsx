@@ -1,19 +1,12 @@
 import './App.css'
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import ListResources from "./pages/ListResources.tsx";
-import ResourcesCreate from "./pages/CreateResource.tsx";
-import ResourcesEdit from "./pages/EditResources.tsx";
+import {BrowserRouter} from "react-router-dom";
 import PageLayout from "./templates/PageLayout";
+import Resources from "./mfe/Resources.tsx";
 
 const App = () => (
     <BrowserRouter>
         <PageLayout>
-            <Routes>
-                <Route path="/" element={"Welcome to authorization"}/>
-                <Route path="/resources" element={<ListResources/>}/>
-                <Route path="/resources/create" element={<ResourcesCreate/>}/>
-                <Route path="/resources/:id" element={<ResourcesEdit/>}/>
-            </Routes>
+            <Resources />
         </PageLayout>
     </BrowserRouter>
 );

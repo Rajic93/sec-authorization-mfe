@@ -1,8 +1,25 @@
 {
-  "name": "auth-fe",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@alx_rajic_auth/authorization",
+  "author": "aleks.v.rajic@gmail.com",
+  "private": false,
+  "version": "0.1.1",
   "type": "module",
+  "main": "dist/Resources.umd.js",
+  "module": "dist/Resources.es.js",
+  "types": "dist/Resources.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/Resources.es.js",
+      "require": "./dist/Resources.umd.js"
+    },
+    "./styles": "./dist/Resources.css"
+  },
+  "files": [
+    "/dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -34,9 +51,11 @@
     "globals": "^15.9.0",
     "jsdom": "^24.1.1",
     "rollup-plugin-typescript-paths": "^1.5.0",
+    "tslib": "^2.6.3",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
+    "vite-plugin-dts": "^4.0.3",
     "vitest": "^2.0.5"
   }
 }

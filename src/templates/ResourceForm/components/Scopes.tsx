@@ -1,14 +1,22 @@
-import { Button, Col, Row } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import React from 'react';
+import { Button, Col, Row, Typography } from "antd";
+import {
+    EyeInvisibleOutlined,
+    EyeOutlined,
+    PlusOutlined,
+} from "@ant-design/icons";
 import split from "lodash/split";
 import Scope, { ScopeModel } from "./Scope";
 
 interface ScopesProps {
     onScopesChange: (scopes: ScopeModel[]) => void;
     scopes: ScopeModel[];
+    scopeTemplateStartVisible: boolean,
 }
 
-const Scopes = ({ onScopesChange, scopes = [] }: ScopesProps) => {
+const Scopes = ({ onScopesChange, scopes = [], scopeTemplateStartVisible }: ScopesProps) => {
+    const [templateVisible, setTemplateVisible] = React.useState(scopeTemplateStartVisible);
+
     const onSetScopes = (newScopes: ScopeModel[]) => {
         onScopesChange(newScopes)
     }
@@ -41,6 +49,8 @@ const Scopes = ({ onScopesChange, scopes = [] }: ScopesProps) => {
         onSetScopes([...scopes]);
     }
 
+    const TemplateIcon = templateVisible ? EyeOutlined : EyeInvisibleOutlined;
+
     return (
         <>
             <Row>
@@ -57,6 +67,29 @@ const Scopes = ({ onScopesChange, scopes = [] }: ScopesProps) => {
             </Row>
             <Row>
                 <Col span={24}>
+                    {scopes.length === 0 ? (
+                        <>
+                            <Row justify="start" align="middle">
+                                <Typography.Text>Scope Template</Typography.Text>
+                                <TemplateIcon
+                                    onClick={() => setTemplateVisible(!templateVisible)}
+                                    style={{ cursor: "pointer", display: 'inline-block', marginLeft: 5 }}
+                                />
+                            </Row>
+                            <Row style={{ visibility: !templateVisible ? 'hidden' : 'visible' }}>
+                                <Scope
+                                    scope={{ mapping: { path: 'scope.property.mapping' }, name: 'scope name', key: 'template' }}
+                                    key={'template'}
+                                    onNameChange={onScopeNameChange}
+                                    onScopeRemove={onScopeRemove}
+                                    onMappingChange={onMappingChange}
+                                    onMappingRemove={onMappingRemove}
+                                    onMappingAdd={onMappingAdd}
+                                    disabled
+                                />
+                            </Row>
+                        </>
+                    ) : null}
                     {scopes.map((scope, index) => (
                         <Scope
                             scope={{ ...scope, key: index.toString() }}

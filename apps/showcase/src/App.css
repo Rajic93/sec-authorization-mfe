@@ -1,0 +1,13 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.list {
+  margin: 10px;
+}
+
+body {
+  margin: 0;
+}

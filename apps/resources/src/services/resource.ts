@@ -13,6 +13,7 @@ export interface ResourceService {
     loadResourcesPath?: string;
     loadResourceByIdPath?: string;
     deleteResourceByIdPath?: string;
+    bulkDeleteResourcesPath?: string;
     updateResourceActionsByIdPath?: string;
     updateResourceActionScopesByIdAndActionIdPath?: string;
 }
@@ -23,6 +24,7 @@ export default ({
     loadResourceByIdPath,
     createResourcePath,
     deleteResourceByIdPath,
+    bulkDeleteResourcesPath,
     updateResourceActionsByIdPath,
     updateResourceActionScopesByIdAndActionIdPath,
 }: ResourceService | undefined = {}) =>  {
@@ -42,6 +44,10 @@ export default ({
 
     const deleteResourceById = async (id: string) => instance
         .delete(deleteResourceByIdPath || `/resources/${id}`)
+        .then((res) => res.data);
+
+    const bulkDeleteResources = async (ids: string) => instance
+        .delete(bulkDeleteResourcesPath || `/resources/`, { data: { ids } })
         .then((res) => res.data);
 
     const updateResourceActions = async (id: string, body: Partial<ResourceActions>) => instance
@@ -70,6 +76,7 @@ export default ({
         loadResourceById,
         createResource,
         deleteResourceById,
+        bulkDeleteResources,
         updateResourceActions,
         updateResourceActionScopes,
     };

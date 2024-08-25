@@ -20,12 +20,13 @@ const tableIconButtonStyle = {
 
 interface ResourceListProps {
     resourcesLoad: (pageSize: number, pageNumber: number) => Promise<Resource[]>;
-    resourceDelete: (id: string) => Promise<Resource[]>;
+    resourceDelete?: (ids: string[]) => Promise<Resource[]>;
+    resourcesBulkDelete?: (id: string) => Promise<Resource[]>;
     onDelete?: (ids: string[]) => void;
     defaultPageSize?: number;
 }
 
-const ResourceList = ({ defaultPageSize = 10, resourcesLoad, resourceDelete, onDelete = (deletedIds) => console.log({ deletedIds }) }: ResourceListProps) => {
+const ResourceList = ({ defaultPageSize = 10, resourcesLoad, resourcesBulkDelete, onDelete = (deletedIds) => console.log({ deletedIds }) }: ResourceListProps) => {
     const [editedResource, setEditedResource] = useState<Record<string, Partial<Resource> | undefined>>({});
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [rows, setRows] = useState<Resource[]>([]);
@@ -64,18 +65,13 @@ const ResourceList = ({ defaultPageSize = 10, resourcesLoad, resourceDelete, onD
         })
     }
 
-    const onBulkDelete = () => Promise.all(map(
-        selectedRowKeys,
-        async (id) => {
-            await resourceDelete(id.toString());
-            return id;
-        },
-    )).then((ids) => {
-        setEditedResource({});
-        setSelectedRowKeys([]);
-        onLoadHandler()
-        onDelete(ids as string[])
-    });
+    const onBulkDelete = () => typeof resourcesBulkDelete === 'function' && resourcesBulkDelete(selectedRowKeys)
+        .then((resources) => {
+            setEditedResource({});
+            setSelectedRowKeys([]);
+            onLoadHandler()
+            onDelete(map(resources, (resource: Resource) => resource.id))
+        });
 
     const onPageChange = (nextPage: number, nextPageSize: number) => {
         console.log({ page, pageSize })

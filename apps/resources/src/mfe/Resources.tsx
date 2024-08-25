@@ -110,7 +110,7 @@ export const Resources = ({ routePaths, events, serviceConfig, formConfig, notif
                                     .catch((error) => openNotification(error.toString(), 'error'))
                                 : openNotification(notificationsConfig?.deleteSuccessMessage || 'Resource successfully deleted.')}
                             resourcesLoad={service.loadResources}
-                            resourceDelete={service.deleteResourceById}
+                            resourcesBulkDelete={service.bulkDeleteResources}
                         />
                     )}/>
                     <Route path={routePaths?.home || "/"} element={(

@@ -1,4 +1,5 @@
-# `@alx_rajic_auth/resources`
+    # `@sec-authorize/mfe-resources
+`
 
 [![npm version](https://img.shields.io/npm/v/@alx_rajic_auth/resources.svg)](https://www.npmjs.com/package/@alx_rajic_auth/resources)
 [![Build Status](https://img.shields.io/travis/your-username/your-package-name.svg)](https://travis-ci.org/your-username/your-package-name)

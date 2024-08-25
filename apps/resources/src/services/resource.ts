@@ -28,8 +28,8 @@ export default ({
 }: ResourceService | undefined = {}) =>  {
     const instance = axios.create({ baseURL: baseUrl || 'http://localhost:3000/'});
 
-    const loadResources = async (): Promise<Resource[]> => instance
-        .get(loadResourcesPath || '/resources')
+    const loadResources = async (pageSize: number, page: number): Promise<Resource[]> => instance
+        .get(loadResourcesPath || '/resources', { params: { pageSize, page } })
         .then((res) => res.data);
 
     const loadResourceById = async (id: string): Promise<Resource> => instance

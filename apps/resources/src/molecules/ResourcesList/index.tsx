@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { useEffect, useState, Key } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Checkbox, Row, Table, TableProps, Tooltip, Typography } from "antd";
-import {DeleteOutlined, MoreOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import { DeleteOutlined, MoreOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Resource } from "../../dto/Resource.ts";
 import map from "lodash/map";
+import slice from "lodash/slice";
+import CopyValue from "../../../../../packages/common/src/molecules/CopyValue";
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
 interface DataType {
-    key: React.Key;
+    key: Key;
 }
 
 const tableIconButtonStyle = {
@@ -17,19 +19,22 @@ const tableIconButtonStyle = {
 };
 
 interface ResourceListProps {
-    resourcesLoad: () => Promise<Resource[]>;
+    resourcesLoad: (pageSize: number, pageNumber: number) => Promise<Resource[]>;
     resourceDelete: (id: string) => Promise<Resource[]>;
     onDelete?: (ids: string[]) => void;
+    defaultPageSize?: number;
 }
 
-const ResourceList = ({ resourcesLoad, resourceDelete, onDelete = (deletedIds) => console.log({ deletedIds }) }: ResourceListProps) => {
+const ResourceList = ({ defaultPageSize = 10, resourcesLoad, resourceDelete, onDelete = (deletedIds) => console.log({ deletedIds }) }: ResourceListProps) => {
     const [editedResource, setEditedResource] = useState<Record<string, Partial<Resource> | undefined>>({});
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [rows, setRows] = useState<Resource[]>([]);
+    const [pageSize, setPageSize] = useState(defaultPageSize);
+    const [page, setPage] = useState(1);
     const navigate = useNavigate();
 
-    const onLoadHandler = () => {
-        resourcesLoad()
+    const onLoadHandler = (pSize: number = pageSize, pageNumber: number = 1) => {
+        resourcesLoad(pSize, pageNumber)
             .then((data) => setRows(
                 map(data, (row) => ({
                     ...row,
@@ -72,11 +77,43 @@ const ResourceList = ({ resourcesLoad, resourceDelete, onDelete = (deletedIds) =
         onDelete(ids as string[])
     });
 
+    const onPageChange = (nextPage: number, nextPageSize: number) => {
+        console.log({ page, pageSize })
+        if (pageSize !== nextPageSize) {
+            setPageSize(nextPageSize);
+        }
+        const resolvedPageSize = pageSize !== nextPageSize ? nextPageSize: pageSize;
+        const resolvedPage = pageSize !== nextPageSize ? 1: nextPage;
+        setPage(resolvedPage);
+        console.log({ resolvedPageSize, resolvedPage });
+        onLoadHandler(resolvedPageSize, resolvedPage);
+    }
+
     const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+            render: (_: undefined, record: Resource) => (
+                <Typography.Text>
+                    <Tooltip
+                        title={record.id}
+                    >
+                        <Typography.Text>
+                            {slice(record.id, 0, 8)}...
+                        </Typography.Text>
+                        {" "}
+                    </Tooltip>
+                    <CopyValue value={record.id} noLabel/>
+                </Typography.Text>
+            ),
+            responsive: ['lg'],
+        },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+            ellipsis: true,
         },
         {
             title: 'Description',
@@ -114,9 +151,20 @@ const ResourceList = ({ resourcesLoad, resourceDelete, onDelete = (deletedIds) =
             render: (_: undefined, record: Resource) => <Checkbox disabled={!editedResource[record.id]} checked={(editedResource[record.id] || record).deleteEnabled} onChange={({ target: { checked: value } }) => onUpdateAction(record.id, 'deleteEnabled', value)}/>
         },
         {
+            title: 'Created At',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (_: undefined, record: Resource) => {
+                const createdAt = new Date(record.createdAt);
+                return `${createdAt.getFullYear()}-${createdAt.getMonth()}-${createdAt.getDate()} ${createdAt.getHours()}:${createdAt.getMinutes()}:${createdAt.getSeconds()}`;
+            },
+            responsive: ['lg'],
+        },
+        {
             title: 'Actions',
             dataIndex: 'actions',
             key: 'actions',
+            fixed: 'right',
             render: (_: undefined, record: Resource) => (
                 <Tooltip title="Resource details">
                     <Link to={`/resources/${record.id}`}>
@@ -128,37 +176,40 @@ const ResourceList = ({ resourcesLoad, resourceDelete, onDelete = (deletedIds) =
     ];
 
     return (
-        <Table
-            columns={columns}
-            dataSource={rows}
-            rowSelection={rowSelection as never} // todo: fix never cast
-            title={() => (
-                <Row>
-                    <Typography.Text
-                        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                        onClick={() => navigate('/resources/create')}
-                    >
-                        <PlusCircleOutlined
-                            style={tableIconButtonStyle}
-                        />
-                        Create Resource
-                    </Typography.Text>
-                    {selectedRowKeys.length ? (
+        <>
+            <Table
+                columns={columns}
+                dataSource={rows}
+                rowSelection={rowSelection as never} // todo: fix never cast
+                pagination={{ position: 'center', onChange: onPageChange, total: 500, pageSizeOptions: [2, 10, 50, 100], current: page, pageSize }}
+                title={() => (
+                    <Row>
                         <Typography.Text
-                            style={{ cursor: 'pointer', marginLeft: 24, display: 'flex', alignItems: 'center' }}
-                            onClick={onBulkDelete}
+                            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                            onClick={() => navigate('/resources/create')}
                         >
-                            <DeleteOutlined
+                            <PlusCircleOutlined
                                 style={tableIconButtonStyle}
                             />
-                            {' '}
-                            Bulk Delete Resources
+                            Create Resource
                         </Typography.Text>
-                    ): null}
-                </Row>
-            )}
-        />
-    )
+                        {selectedRowKeys.length ? (
+                            <Typography.Text
+                                style={{ cursor: 'pointer', marginLeft: 24, display: 'flex', alignItems: 'center' }}
+                                onClick={onBulkDelete}
+                            >
+                                <DeleteOutlined
+                                    style={tableIconButtonStyle}
+                                />
+                                {' '}
+                                Bulk Delete Resources
+                            </Typography.Text>
+                        ): null}
+                    </Row>
+                )}
+            />
+        </>
+    );
 }
 
 export default ResourceList;

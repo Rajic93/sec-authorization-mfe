@@ -6,6 +6,7 @@ import map from "lodash/map";
 import filter from "lodash/filter";
 import replace from "lodash/replace";
 import {Button, Card, Col, Form, Row, Spin, Typography} from "antd";
+import { LeftOutlined } from '@ant-design/icons'
 import Scopes from "../../templates/ResourceForm/components/Scopes.tsx";
 import ResourceInfo, {
     NameAndDescription,
@@ -169,8 +170,12 @@ const ResourceFormTemplate = ({
         >
             <Typography.Title
                 level={3}
-                style={{ marginLeft: 0, marginTop: 10, marginBottom: 0 }}
+                style={{ marginLeft: 0, marginTop: 10, marginBottom: 0, marginBottom: 10}}
             >
+                <LeftOutlined
+                    style={{ marginRight: 10, cursor: 'pointer' }}
+                    onClick={() => navigate(-1)}
+                />
                 {mode === ResourceFormTemplateModes.EDIT ? 'Edit' :'Create'} Resource
             </Typography.Title>
             <Form
@@ -190,7 +195,7 @@ const ResourceFormTemplate = ({
                                 md={12}
                             >
                                 <ResourceInfo
-                                    values={pick(form, ['name', 'description']) as NameAndDescription}
+                                    values={pick(form, ['name', 'description', 'createdAt', 'updatedAt', 'id']) as NameAndDescription}
                                     errors={pick(errors, ['name', 'description']) as ResourceInfoErrors}
                                     onInputChange={onInputChange}
                                 />

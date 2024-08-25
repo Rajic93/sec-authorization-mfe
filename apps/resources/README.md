@@ -11,9 +11,9 @@ A Resources management micro-frontend, with creation, listing, editing and remov
 Install the package using npm or yarn:
 
 ```bash
-npm install @alx_rajic_auth/resources
+npm install @sec-authorize/resources
 # or
-yarn add @alx_rajic_auth/resources
+yarn add @sec-authorize/resources
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ yarn add @alx_rajic_auth/resources
 Basic ussage
 
 ```javascript
-import Resources from '@alx_rajic_auth/resources';
+import Resources from '@sec-authorize/resources';
 import { BrowserRouter } from 'react-router-dom';
 
 const ParentComponent = () => (
@@ -46,7 +46,7 @@ Sets table of resources page path. Default: `/resources`
 #### `create: string`
 Sets create resource page path. Default: `/resources/create`
 
-#### `edit: string```
+#### `edit: string`
 Sets edit resource page path. Default: `/resources/:id`
 
 ### `events?: ResourcesEvents`
@@ -125,6 +125,10 @@ Path of the load resource by id `GET` route. Default: `/resources/:id`.
 #### `deleteResourceByIdPath?: string`
 
 Path of the delete resource `DELETE` route. Default: `/resources/:id`.
+
+#### `bulkDeleteResourcesPath?: string`
+
+Path of the bulk delete resources `DELETE` route. Default: `/resources`.
 
 #### `updateResourceActionsByIdPath?: string`
 

@@ -1,9 +1,6 @@
-    # `@sec-authorize/mfe-resources
-`
 
-[![npm version](https://img.shields.io/npm/v/@alx_rajic_auth/resources.svg)](https://www.npmjs.com/package/@alx_rajic_auth/resources)
-[![Build Status](https://img.shields.io/travis/your-username/your-package-name.svg)](https://travis-ci.org/your-username/your-package-name)
-[![License](https://img.shields.io/npm/l/your-package-name.svg)](https://github.com/your-username/your-package-name/blob/main/LICENSE)
+[//]: # ([![npm version]&#40;https://img.shields.io/npm/v/@alx_rajic_auth/resources.svg&#41;]&#40;https://www.npmjs.com/package/@alx_rajic_auth/resources&#41;)
+[//]: # ([![Build Status]&#40;https://img.shields.io/travis/your-username/your-package-name.svg&#41;]&#40;https://travis-ci.org/your-username/your-package-name&#41;)
 
 A Resources management micro-frontend, with creation, listing, editing and removal. 
 
@@ -148,4 +145,4 @@ Path of the update resource's action's scopes `PATCH` route. Default: `/resource
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/your-username/@alx_rajic_auth/resources/blob/main/LICENSE) file for details.
+This project is released under the [MIT licence](https://www.mit.edu/~amini/LICENSE.md).

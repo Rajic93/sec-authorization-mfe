@@ -23,4 +23,4 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_ACC_TOK }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn semantic-release
+        run: yarn workspace @sec-authorize/mfe-resources  semantic-release

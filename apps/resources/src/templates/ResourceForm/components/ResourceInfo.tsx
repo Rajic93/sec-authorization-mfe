@@ -1,6 +1,5 @@
 import TextInput from "../../../atoms/Input";
 import { Typography, Row, Col } from 'antd';
-import React from "react";
 import CopyValue from "../../../../../../packages/common/src/molecules/CopyValue";
 
 export type OnInputChange = (key: string, value: string | number | boolean) => void

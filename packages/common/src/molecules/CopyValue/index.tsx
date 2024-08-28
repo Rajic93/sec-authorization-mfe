@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Tooltip, Typography } from 'antd';
 import { CopyOutlined } from '@ant-design/icons'
 
@@ -24,7 +24,7 @@ const CopyValue = ({ value = '', noLabel = false }: CopyValueProps) => {
             >
                 <CopyOutlined
                     style={{ cursor: 'pointer', color: idCopied ? 'green' : undefined }}
-                    onClick={() => window.navigator.clipboard.writeText(value || '').then(() => {
+                    onClick={() => window.navigator.clipboard.writeText(value ? value.toString() : '').then(() => {
                         setCopied(true);
                         setTimeout(() => setCopied(false), 3000);
                     })}

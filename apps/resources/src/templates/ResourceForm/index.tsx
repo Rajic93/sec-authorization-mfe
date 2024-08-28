@@ -170,7 +170,7 @@ const ResourceFormTemplate = ({
         >
             <Typography.Title
                 level={3}
-                style={{ marginLeft: 0, marginTop: 10, marginBottom: 0, marginBottom: 10}}
+                style={{ marginLeft: 0, marginTop: 10, marginBottom: 10}}
             >
                 <LeftOutlined
                     style={{ marginRight: 10, cursor: 'pointer' }}

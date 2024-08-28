@@ -21,14 +21,14 @@ const tableIconButtonStyle = {
 interface ResourceListProps {
     resourcesLoad: (pageSize: number, pageNumber: number) => Promise<Resource[]>;
     resourceDelete?: (ids: string[]) => Promise<Resource[]>;
-    resourcesBulkDelete?: (id: string) => Promise<Resource[]>;
+    resourcesBulkDelete?: (id: string[]) => Promise<Resource[]>;
     onDelete?: (ids: string[]) => void;
     defaultPageSize?: number;
 }
 
 const ResourceList = ({ defaultPageSize = 10, resourcesLoad, resourcesBulkDelete, onDelete = (deletedIds) => console.log({ deletedIds }) }: ResourceListProps) => {
     const [editedResource, setEditedResource] = useState<Record<string, Partial<Resource> | undefined>>({});
-    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
     const [rows, setRows] = useState<Resource[]>([]);
     const [pageSize, setPageSize] = useState(defaultPageSize);
     const [page, setPage] = useState(1);
@@ -47,7 +47,7 @@ const ResourceList = ({ defaultPageSize = 10, resourcesLoad, resourcesBulkDelete
     useEffect(onLoadHandler, []);
 
     const onSelectChange = (_: React.Key[], selectedRows: DataType[]) => {
-        setSelectedRowKeys(selectedRows.map(({key}: DataType) => key));
+        setSelectedRowKeys(selectedRows.map(({key}: DataType) => key.toString()));
     };
 
     const rowSelection: TableRowSelection<DataType> = {
@@ -174,10 +174,10 @@ const ResourceList = ({ defaultPageSize = 10, resourcesLoad, resourcesBulkDelete
     return (
         <>
             <Table
-                columns={columns}
+                columns={columns as any}
                 dataSource={rows}
                 rowSelection={rowSelection as never} // todo: fix never cast
-                pagination={{ position: 'center', onChange: onPageChange, total: 500, pageSizeOptions: [2, 10, 50, 100], current: page, pageSize }}
+                pagination={{ position: 'center', onChange: onPageChange, total: 500, pageSizeOptions: [2, 10, 50, 100], current: page, pageSize } as any}
                 title={() => (
                     <Row>
                         <Typography.Text

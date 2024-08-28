@@ -13,6 +13,9 @@ interface ResourceInfoProps {
     values: {
         name?: string;
         description?: string;
+        id?: string;
+        createdAt?: string;
+        updatedAt?: string;
     };
     preventSpaceInName?: boolean;
     spaceInNameReplacementChar?: string;

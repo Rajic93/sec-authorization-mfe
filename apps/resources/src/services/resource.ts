@@ -46,7 +46,7 @@ export default ({
         .delete(deleteResourceByIdPath || `/resources/${id}`)
         .then((res) => res.data);
 
-    const bulkDeleteResources = async (ids: string) => instance
+    const bulkDeleteResources = async (ids: string[]) => instance
         .delete(bulkDeleteResourcesPath || `/resources/`, { data: { ids } })
         .then((res) => res.data);
 

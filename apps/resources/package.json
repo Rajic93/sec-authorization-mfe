@@ -1,7 +1,12 @@
 {
   "name": "@sec-auth/mfe-resources",
-  "author": "aleks.v.rajic@gmail.com",
-  "version": "0.1.9",
+  "author": "aleksandar.v.rajic@gmail.com",
+  "license": "MIT",
+  "version": "0.1.10",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rajic93/sec-authorization-mfe.git"
+  },
   "type": "module",
   "main": "dist/Resources.umd.js",
   "module": "dist/Resources.es.js",

@@ -17,6 +17,6 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
       # - run: yarn workspace @sec-authorize/mfe-resources build
-      - run: npm publish --provenance --access public
+      - run: cd apps/resources &&  npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACC_TOK }}

@@ -20,6 +20,8 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn workspace @sec-auth/mfe-resources build
       - run: cd apps/resources &&  npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACC_TOK }}
       # - name: Release
       #   env:
       #     NPM_TOKEN: ${{ secrets.NPM_ACC_TOK }}

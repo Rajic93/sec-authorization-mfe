@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org/:alx_rajic'
+          registry-url: 'https://registry.npmjs.org'
       # - run: yarn workspace @sec-authorize/mfe-resources build
       - run: npm publish --provenance --access public
         env:

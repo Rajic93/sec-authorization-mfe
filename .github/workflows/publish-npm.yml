@@ -16,6 +16,7 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@sec-auth'
       - run: yarn install --frozen-lockfile
       - run: yarn workspace @sec-auth/mfe-resources build
       - run: cd apps/resources &&  npm publish --access public

@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
-    "@sec-authorize/mfe-resources": "workspace:^",
+    "@sec-auth/mfe-resources": "workspace:^",
     "@types/lodash": "^4.17.7",
     "@types/react-router-dom": "^5.3.3",
     "antd": "^5.20.1",

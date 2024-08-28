@@ -1,5 +1,5 @@
 {
-  "name": "@sec-authorize/mfe-resources",
+  "name": "@sec-auth/mfe-resources",
   "author": "aleks.v.rajic@gmail.com",
   "version": "0.1.8",
   "type": "module",
